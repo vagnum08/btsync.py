@@ -17,6 +17,14 @@ class Settings(Model):
         ('ulrate', int),
         ('portmapping', int),
         ('listeningport', int),
+        ('defaultsynclevel',int),
+        ('silent_update',int),
+        ('debug_logging',int),
+        ('show_copy_key',int),
+        ('show_notifications',int),
+        ('autostart',int),
+        ('check_update',int),
+        ('display_new_version',int)
     )
 
 
@@ -25,6 +33,17 @@ class Peer(Model):
         ('direct', int),
         ('name', str),
         ('status', str),
+        ('downdiff', int),
+        ('isonline',int),
+        ('lastsynctime',int),
+        ('userid',str),
+        ('lastseentime',int),
+        ('lastsenttime',int),
+        ('lastreceivedtime',int),
+        ('upfiles',int),
+        ('id',str),
+        ('updiff',int),
+        ('downfiles',int)
     )
 
 
@@ -45,6 +64,25 @@ class Folder(Model):
         ('has_key', bool),
         ('error', str),
         ('date_added', str),
+        ('up_eta', int),
+        ('paused', int),
+        ('up_status', int),
+        ('down_eta', int),
+        ('archive', str),
+        ('total_size', int),
+        ('archive_size', int),
+        ('up_speed', int),
+        ('synclevel', int),
+        ('canencrypt', int),
+        ('folderid', int),
+        ('down_status', int),
+        ('down_speed', int),
+        ('path', str),
+        ('ismanaged', int),
+        ('archive_files', int),
+        ('stopped', int),
+        ('available_space', int),
+        ('encryptedsecret', str)
     )
 
 
@@ -57,5 +95,10 @@ class FolderPreference(Model):
         ("searchdht", int),
         ("searchlan", int),
         ("usehosts", int),
-        ("usetracker", int)
+        ("usetracker", int),
+        ('selectivesync',int),
+        ('paused',int),
+        ('canencrypt',int),
+        ('stopped',int),
+        ('secrettype',int)
     )

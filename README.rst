@@ -1,3 +1,8 @@
+Changed/Added functions to work with btsync 2.x
+
+
+
+
 btsync.py
 =========
 

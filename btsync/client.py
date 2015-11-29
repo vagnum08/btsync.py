@@ -117,6 +117,9 @@ class Client(object):
     def generate_secret(self):
         return self._make_request(params={'action': 'generatesecret'})
 
+    def secret(self):
+        return self._make_request(params={'action': 'generatesecret', 'type': 1})
+
     def add_sync_folder(self, name, secret, force=False):
         params = {'action': 'addsyncfolder',
                   'name': name,
@@ -128,6 +131,17 @@ class Client(object):
         if result['error']:
             raise BtsyncException(result)
 
+    def add_sync2_folder(self, path, secret='', force=False):
+        params = {'action': 'addsyncfolder',
+                  'path': path,
+                  'secret': secret,
+                  'selectivesync': 'false'}
+        result = self._make_request(params=params)
+        if 'error' in result.keys():
+            raise BtsyncException(result)
+        return result['value']
+
+
     def remove_sync_folder(self, name, secret):
         self._make_request(params={
             'action': 'removefolder',
@@ -138,8 +152,8 @@ class Client(object):
     @property
     def settings(self):
         return Settings(**self._make_request(params={
-            'action': 'getsettings',
-        })['settings'])
+            'action': 'settings',
+        })['value'])
 
     def set_settings(self, settings):
         params = {
@@ -148,13 +162,12 @@ class Client(object):
         params.update(settings)
         self._make_request(params=params)
 
-    def get_folder_preference(self, name, secret):
+    def get_folder_preference(self, folderid):
         response = self._make_request(params={
-            'action': 'getfolderpref',
-            'name': name,
-            'secret': secret,
+            'action': 'folderpref',
+            'folderid': folderid,
         })
-        return FolderPreference(**response['folderpref'])
+        return FolderPreference(**response['value'])
 
     def set_folder_preference(self, name, secret, prefs):
         params = {
@@ -182,6 +195,23 @@ class Client(object):
             'secret': secret,
         })
         return response['invite']
+
+    def get_sync_link(self, folderid, readonly=True, askapproval=0):
+        if readonly:
+            perm = 2
+        else:
+            perm = 3
+        response = self._make_request(params={
+            'action': 'getsynclink',
+            'permissions': perm,
+            'timelimit': 259200,
+            'clicklimit': 0,
+            'askapproval': askapproval,
+            'type': 'copy',
+            'linktype': 'https',
+            'folderid': folderid
+        })
+        return response['value']
 
     @property
     def username(self):
